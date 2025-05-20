@@ -20,7 +20,7 @@ Pytorch implementation for paper "Shapley Value-driven Data Pruning for Recommen
     ```
     source setup.sh
     ```
-5. To train the base recommender: run:
+5. To train the base recommender, run:
     ```
     python scripts/train_base_amazon.py
     ```
