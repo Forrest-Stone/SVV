@@ -6,14 +6,12 @@ import os
 from pathlib import Path
 from utils.argument_amazon import arg_parse_div_optimize
 from models.models import BaseRecModel
-from utils.evaluate_functions import evaluate_model, evaluate_val_set_batch_user
+from utils.evaluate_functions import evaluate_model
 from time import time
 import datetime
 from sklearn.model_selection import train_test_split
 import torch.nn as nn
 import logging
-import subprocess
-import atexit
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
@@ -109,10 +107,10 @@ if __name__ == "__main__":
 
     # Calculate FastSHAP values
     Path(div_args.save_path).mkdir(parents=True, exist_ok=True)
-    if os.path.isfile(os.path.join(div_args.save_path, div_args.div_type + '_explainer.pth')):
+    if os.path.isfile(os.path.join(div_args.save_path, div_args.value_type + '_explainer.pth')):
         print("Loading saved explainer model.")
         explainer = torch.load(os.path.join(
-            div_args.save_path, div_args.div_type + '_explainer.pth')).to(device)
+            div_args.save_path, div_args.value_type + '_explainer.pth')).to(device)
         fastshap = FastSHAP(explainer, imputer,
                             normalization='additive', link='none')
         # fastshap = FastSHAP(explainer, imputer,
@@ -138,7 +136,7 @@ if __name__ == "__main__":
         # Save explainer
         explainer.cpu()
         torch.save(explainer, os.path.join(div_args.save_path,
-                   div_args.div_type + '_explainer.pth'))
+                   div_args.value_type + '_explainer.pth'))
         explainer.to(device)
 
     end_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -152,7 +150,7 @@ if __name__ == "__main__":
     fastshap_values = fastshap.shap_values(data)
     print("fastshap_values: ")
     print(fastshap_values.squeeze())
-    np.save(os.path.join(div_args.save_path, div_args.div_type +
+    np.save(os.path.join(div_args.save_path, div_args.value_type +
             '_fastshap_values_origin.npy'), fastshap_values.squeeze() * rec_dataset.train_matrix.toarray())
 
     end_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")

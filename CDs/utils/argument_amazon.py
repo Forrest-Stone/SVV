@@ -107,8 +107,8 @@ def arg_parse_div_optimize():
         type=str,
         default="./dataset_objs/",
         help="the path to the saved dataset object in the training phase")
-    parser.add_argument("--div_type",
-                        dest="div_type",
+    parser.add_argument("--value_type",
+                        dest="value_type",
                         type=str,
                         default="NDCG",
                         help="which value function type we want to obserave, Recall or NDCG")

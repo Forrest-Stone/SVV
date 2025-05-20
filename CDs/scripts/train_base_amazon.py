@@ -13,8 +13,6 @@ import logging
 from time import time
 from tensorboardX import SummaryWriter
 from copy import deepcopy
-import subprocess
-import atexit
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)

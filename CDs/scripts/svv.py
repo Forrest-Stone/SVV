@@ -71,21 +71,21 @@ def train_base_recommendation(train_args, pre_processing_args, div_args, th1, th
                         dtype=torch.float32)
     # data = rec_dataset.train_matrix.toarray()
     weights_data = np.load(os.path.join(
-        './fastshap_results/', div_args.div_type + '_fastshap_values_origin.npy'))
+        './fastshap_results/', div_args.value_type + '_fastshap_values_origin.npy'))
     # weights_data = np.nan_to_num(weights_data)
     weights_data = torch.tensor(weights_data, dtype=torch.float32)
 
     # the function to utilite the weights
-    if os.path.exists(os.path.join('./fastshap_results/', div_args.div_type + '_fastshap_values_origin_processed.npy')):
+    if os.path.exists(os.path.join('./fastshap_results/', div_args.value_type + '_fastshap_values_origin_processed.npy')):
         weights_data = torch.load(os.path.join(
-            './fastshap_results/', div_args.div_type + '_fastshap_values_origin_processed.npy'))
+            './fastshap_results/', div_args.value_type + '_fastshap_values_origin_processed.npy'))
         print("Load the processed weights.")
     else:
         weights_data = use_weights(
             data, weights_data, rec_dataset.test_data, th1, th2)
         print("Process the weights and save it.")
         torch.save(weights_data, os.path.join('./fastshap_results/',
-                   div_args.div_type + '_fastshap_values_origin_processed.npy'))
+                   div_args.value_type + '_fastshap_values_origin_processed.npy'))
 
     print(weights_data)
     print(train_args.weight_confidence)
